@@ -10,9 +10,16 @@ router.get("/", async (req, res) => {
   let page_size = 48;
   let search = "";
   let ordering = "added";
+  let page = 1;
 
   if (req.query.search) {
     search = req.query.search;
+  }
+  if (req.query.page) {
+    page = req.query.page;
+  }
+  if (req.query.pagesize) {
+    page_size = req.query.pagesize;
   }
   if (req.query.ordering) {
     if (req.query.ordering === "released") {
@@ -26,7 +33,7 @@ router.get("/", async (req, res) => {
 
   try {
     const data = await axios.get(
-      `https://api.rawg.io/api/games?key=${process.env.API_KEY}&page_size=${page_size}&search=${search}&ordering=${ordering}`
+      `https://api.rawg.io/api/games?key=${process.env.API_KEY}&page_size=${page_size}&search=${search}&ordering=${ordering}&page=${page}`
     );
     res.status(200).json(data.data);
   } catch (error) {
