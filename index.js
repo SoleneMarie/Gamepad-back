@@ -10,6 +10,10 @@ const games = require("./Routes/games");
 app.use(games);
 const game = require("./Routes/one-game");
 app.use(game);
+const genres = require("./Routes/genres");
+app.use(genres);
+const genresID = require("./Routes/genresID");
+app.use(genresID);
 /*const checkConnect = require("./check-connect");
 app.use(checkConnect);*/
 
