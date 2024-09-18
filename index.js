@@ -8,6 +8,8 @@ require("dotenv").config();
 
 const games = require("./Routes/games");
 app.use(games);
+const game = require("./Routes/one-game");
+app.use(game);
 /*const checkConnect = require("./check-connect");
 app.use(checkConnect);*/
 
