@@ -20,7 +20,7 @@ const uid2 = require("uid2");
 
 /* ------------------- fonction de conversion du data de l'image ------------------- */
 const convertPicture = (file) => {
-  return `data:${file.mimetype};base64${file.data.toString("base64")}`;
+  return `data:${file.mimetype};base64,${file.data.toString("base64")}`;
 };
 
 /* --------------------------------------------------------------------------------- */
@@ -56,21 +56,26 @@ router.post("/user/signup", fileUpload(), async (req, res) => {
       /* console.log("else");  OK  */
       const pictureConverted = await convertPicture(pictureData);
       /* console.log("image convertie : ", pictureConverted);   OK   */
-      const result = await cloudinary.uploader.upload(
-        pictureConverted
-      ); /* PROBLEME ICI */
-      console.log("resultat cloudinary", result);
+      let result;
+      try {
+        result = await cloudinary.uploader.upload(pictureConverted);
+        console.log("resultat cloudinary", result);
+      } catch (error) {
+        console.log("erreur d'upload", error);
+        res.status(500).json({ message: error.message });
+      }
+
       const salt = uid2(16);
       const hash = SHA256(password + salt).toString(encBase64);
       const token = uid2(32);
       const newUser = new User({
         username: username,
         email: email,
-        picture: result,
+        picture: result.secure_url,
         salt: salt,
         hash: hash,
         token: token,
-        isEighteen: isEighteen === 0 ? false : true,
+        isEighteen: isEighteen,
       });
       await newUser.save();
       res
