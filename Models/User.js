@@ -6,7 +6,7 @@ mongoose.connect(
 const User = mongoose.model("User", {
   username: { type: String, required: true },
   email: { type: String, required: true },
-  picture: String,
+  picture: { type: String, required: false },
   salt: String,
   hash: String,
   token: String,

@@ -28,7 +28,10 @@ const convertPicture = (file) => {
 router.post("/user/signup", fileUpload(), async (req, res) => {
   try {
     const { username, email, password, confirmPassword, isEighteen } = req.body;
-    const pictureData = req.files.picture;
+    let pictureData;
+    if (req.files.picture) {
+      pictureData = req.files.picture;
+    }
     /*console.log(pictureData);   OK  */
 
     /* --------------  GESTION DES ERREURS POSSIBLES -------------- */
@@ -53,17 +56,21 @@ router.post("/user/signup", fileUpload(), async (req, res) => {
       /*   All OK  */
       /* ------------------------ SI LES DONNEES RECUES SONT OK ------------------------- */
     } else {
-      /* console.log("else");  OK  */
-      const pictureConverted = await convertPicture(pictureData);
-      /* console.log("image convertie : ", pictureConverted);   OK   */
       let result;
-      try {
-        result = await cloudinary.uploader.upload(pictureConverted);
-        console.log("resultat cloudinary", result);
-      } catch (error) {
-        console.log("erreur d'upload", error);
-        res.status(500).json({ message: error.message });
+
+      /* ---------------------- Si j'ai pictureData : ---------------------- */
+      if (pictureData) {
+        const pictureConverted = await convertPicture(pictureData);
+
+        try {
+          result = await cloudinary.uploader.upload(pictureConverted);
+          console.log("resultat cloudinary", result);
+        } catch (error) {
+          console.log("erreur d'upload", error);
+          res.status(500).json({ message: error.message });
+        }
       }
+      /* ------------------------------------------------------------------ */
 
       const salt = uid2(16);
       const hash = SHA256(password + salt).toString(encBase64);
@@ -71,7 +78,7 @@ router.post("/user/signup", fileUpload(), async (req, res) => {
       const newUser = new User({
         username: username,
         email: email,
-        picture: result.secure_url,
+        picture: result && result.secure_url,
         salt: salt,
         hash: hash,
         token: token,
