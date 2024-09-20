@@ -20,6 +20,8 @@ const platforms = require("./Routes/platforms");
 app.use(platforms);
 const stores = require("./Routes/stores");
 app.use(stores);
+const signup = require("./Routes/signup");
+app.use(signup);
 /*const checkConnect = require("./check-connect");
 app.use(checkConnect);*/
 
