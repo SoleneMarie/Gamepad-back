@@ -29,7 +29,7 @@ router.get(`/games/:genres`, async (req, res) => {
   }
   try {
     const data = await axios.get(
-      `https://api.rawg.io/api/games?genres=${genreID}&search=${search}&ordering=${ordering}&key=${process.env.API_KEY}&page_size=${page_size}&page=${page}`
+      `https://api.rawg.io/api/games?genres=${genreID}&search=${search}&ordering=${ordering}&key=${process.env.API_KEY}&page_size=${page_size}`
     );
     res.status(200).json(data.data);
   } catch (error) {
