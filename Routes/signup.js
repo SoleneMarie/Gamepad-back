@@ -24,14 +24,18 @@ const convertPicture = (file) => {
 };
 
 /* --------------------------------------------------------------------------------- */
+console.log("1 = OK");
 
 router.post("/user/signup", fileUpload(), async (req, res) => {
   try {
     const { username, email, password, confirmPassword, isEighteen } = req.body;
-    let pictureData;
-    if (req.files.picture) {
+    let pictureData = null;
+    console.log("2 = OK");
+    console.log(req.files);
+    if (req.files) {
       pictureData = req.files.picture;
     }
+    console.log("3 = OK");
     /*console.log(pictureData);   OK  */
 
     /* --------------  GESTION DES ERREURS POSSIBLES -------------- */
@@ -60,9 +64,8 @@ router.post("/user/signup", fileUpload(), async (req, res) => {
 
       /* ---------------------- Si j'ai pictureData : ---------------------- */
       if (pictureData) {
-        const pictureConverted = await convertPicture(pictureData);
-
         try {
+          const pictureConverted = await convertPicture(pictureData);
           result = await cloudinary.uploader.upload(pictureConverted);
           console.log("resultat cloudinary", result);
         } catch (error) {
@@ -75,10 +78,16 @@ router.post("/user/signup", fileUpload(), async (req, res) => {
       const salt = uid2(16);
       const hash = SHA256(password + salt).toString(encBase64);
       const token = uid2(32);
+      let picture;
+      if (result) {
+        picture = result.secure_url;
+      } else {
+        picture = null;
+      }
       const newUser = new User({
         username: username,
         email: email,
-        picture: result && result.secure_url,
+        picture: picture,
         salt: salt,
         hash: hash,
         token: token,
@@ -90,7 +99,7 @@ router.post("/user/signup", fileUpload(), async (req, res) => {
         .json({ message: "Account created successfully!", account: newUser });
     }
   } catch (error) {
-    res.status(500);
+    res.status(500).json({ message: error.message });
   }
 });
 

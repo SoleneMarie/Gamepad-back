@@ -22,6 +22,11 @@ const stores = require("./Routes/stores");
 app.use(stores);
 const signup = require("./Routes/signup");
 app.use(signup);
+const login = require("./Routes/login");
+app.use(login);
+const userProfile = require("./Routes/user-profile");
+app.use(userProfile);
+
 /*const checkConnect = require("./check-connect");
 app.use(checkConnect);*/
 
