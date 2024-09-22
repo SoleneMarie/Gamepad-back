@@ -11,6 +11,7 @@ const User = mongoose.model("User", {
   hash: String,
   token: String,
   isEighteen: { type: Boolean, default: false },
+  favourites: Array,
 });
 
 module.exports = User;

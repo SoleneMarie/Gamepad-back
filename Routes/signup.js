@@ -92,6 +92,7 @@ router.post("/user/signup", fileUpload(), async (req, res) => {
         hash: hash,
         token: token,
         isEighteen: isEighteen,
+        favourites: [],
       });
       await newUser.save();
       res
