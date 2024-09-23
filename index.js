@@ -26,6 +26,8 @@ const login = require("./Routes/login");
 app.use(login);
 const userProfile = require("./Routes/user-profile");
 app.use(userProfile);
+const favourites = require("./Routes/save-favorite");
+app.use(favourites);
 
 /*const checkConnect = require("./check-connect");
 app.use(checkConnect);*/
