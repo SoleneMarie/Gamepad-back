@@ -3,8 +3,10 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/genres/:id", async (req, res) => {
+  console.log("id récupéré pour le genre: ", req.params.id);
   try {
     const idGenre = req.params.id;
+    console.log("id genre : ", idGenre);
     const data = await axios.get(
       `https://api.rawg.io/api/genres/${idGenre}?key=${process.env.API_KEY}`
     );

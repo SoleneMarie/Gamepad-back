@@ -28,6 +28,8 @@ const userProfile = require("./Routes/user-profile");
 app.use(userProfile);
 const favourites = require("./Routes/save-favorite");
 app.use(favourites);
+const gamesGenres = require("./Routes/games-genres");
+app.use(gamesGenres);
 
 /*const checkConnect = require("./check-connect");
 app.use(checkConnect);*/
