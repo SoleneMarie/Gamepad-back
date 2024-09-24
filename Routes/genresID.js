@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/genres/:id", async (req, res) => {
-  console.log("id récupéré pour le genre: ", req.params.id);
+  console.log("id récupéré pour le genre: ", req.params);
   try {
     const idGenre = req.params.id;
     console.log("id genre : ", idGenre);
