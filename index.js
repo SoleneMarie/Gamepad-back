@@ -35,7 +35,11 @@ app.use(gamesGenres);
 app.use(checkConnect);*/
 
 app.all("*", (req, res) => {
-  res.status(200).json({ message: "Whoops, wrong way! ⛔️" });
+  try {
+    res.status(200).json({ message: "Whoops, wrong way! ⛔️" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 app.listen(process.env.PORT || 3000, () => {
